@@ -1,0 +1,41 @@
+import { useState } from "react";
+import "./image-element.css";
+
+interface Props {
+  src: string;
+  alt: string;
+}
+
+const ImageElement = ({ src, alt }: Props) => {
+  const [error, setError] = useState(false);
+  const [load, setLoad] = useState(false);
+  const emptyStyle = {
+    background: "url(/src/assets/img.svg) no-repeat center center / 40px",
+  };
+
+  return (
+    <>
+      {error ? (
+        <img
+          style={emptyStyle}
+          className={load ? "loaded" : ""}
+          src="/src/assets/empty.svg"
+        />
+      ) : (
+        <img
+          className={load ? "loaded" : ""}
+          src={src}
+          alt={alt}
+          onLoad={() => setLoad(true)}
+          onError={() => {
+            setError(true);
+            setLoad(true);
+          }}
+          loading="lazy"
+        />
+      )}
+    </>
+  );
+};
+
+export default ImageElement;
