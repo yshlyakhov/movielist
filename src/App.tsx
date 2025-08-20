@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Movies from "./pages/movies/Movies";
-import Navigation from "./shared/Navigation";
+import Navigation from "./shared/navigation/Navigation";
 import Favorites from "./pages/favorites/Favorites";
 import MoviesProvider from "./contexts/MoviesProvider";
 import MovieDetails from "./pages/movie-details/MovieDetails";

@@ -14,9 +14,6 @@ import {
 import Pagination from "@mui/material/Pagination";
 import type React from "react";
 import MovieSearch from "./MovieSearch";
-
-import "./movies.css";
-import MovieList from "./MovieList";
 import MoviesTypeSelect from "./MoviesTypeSelect";
 import { useEffect, useState } from "react";
 import {
@@ -25,6 +22,9 @@ import {
   type MovieType,
 } from "./movies.models";
 import type { MoviesError } from "../../api/movies/movies.api.models";
+import MovieList from "../../shared/movie/MovieList";
+
+import "./movies.css";
 
 const Movies = () => {
   // hooks

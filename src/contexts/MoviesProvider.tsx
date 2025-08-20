@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MoviesContext } from "./MoviesContext";
-import type { Movie } from "../api/movies/moviesApiSlice";
+import type { Movie } from "../shared/movie/movie.models";
 
 const MoviesProvider = ({ children }: { children: React.ReactNode }) => {
   const storedFavorites = JSON.parse(localStorage.getItem("FAVORITES") || "[]");

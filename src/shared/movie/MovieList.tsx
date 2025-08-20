@@ -1,5 +1,7 @@
-import type { Movie } from "../../api/movies/movies.api.models";
+import type { Movie } from "./movie.models";
 import MovieCard from "./MovieCard";
+
+import "./movie.css";
 
 interface Props {
   movies: Movie[];

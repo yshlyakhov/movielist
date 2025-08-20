@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { Movie } from "../api/movies/moviesApiSlice";
+import type { Movie } from "../shared/movie/movie.models";
 
 interface ContextValue {
   favorites: Movie[];

@@ -83,3 +83,11 @@ button:focus-visible {
   gap: 2rem;
   width: 100%;
 }
+
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}

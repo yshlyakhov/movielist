@@ -1,5 +1,6 @@
 import { useState } from "react";
-import "./image-element.css";
+
+import "./image.css";
 
 interface Props {
   src: string;

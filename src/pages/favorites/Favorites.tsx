@@ -1,5 +1,6 @@
 import { useMoviesContext } from "../../contexts/MoviesContext";
-import MovieList from "../movies/MovieList";
+import MovieList from "../../shared/movie/MovieList";
+
 import "./favorites.css";
 
 const Favorites = () => {

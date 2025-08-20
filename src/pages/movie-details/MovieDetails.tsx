@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ImageElement from "../../shared/ImageElement";
+import ImageElement from "../../shared/image/ImageElement";
 import FavoriteButton from "../favorites/FavoriteButton";
 import { useGetMovieDetailsQuery } from "../../api/movie/movieApiSlice";
 import type { MovieDetailsError } from "../../api/movie/movie.api.models";
-import type { Movie } from "../../api/movies/movies.api.models";
+import type { Movie } from "../../shared/movie/movie.models";
+
 import "./movie-details.css";
 
 const MovieDetails = () => {
@@ -27,6 +28,7 @@ const MovieDetails = () => {
     title: details?.title,
     poster_path: details?.poster_path,
     release_date: details?.release_date,
+    vote_average: details?.vote_average,
   } as Movie;
   const error_message = (
     error as MovieDetailsError & {

@@ -1,9 +1,4 @@
-export interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  release_date: string;
-}
+import type { Movie } from "../../shared/movie/movie.models";
 
 export interface MoviesRequest {
   page: number;

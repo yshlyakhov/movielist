@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import ImageElement from "../../shared/ImageElement";
-import FavoriteButton from "../favorites/FavoriteButton";
-import type { Movie } from "../../api/movies/movies.api.models";
+import ImageElement from "../image/ImageElement";
+import FavoriteButton from "../../pages/favorites/FavoriteButton";
+import type { Movie } from "./movie.models";
 
 interface Props {
   movie: Movie;
@@ -9,7 +9,8 @@ interface Props {
 
 const MovieCard = ({ movie }: Props) => {
   const navigate = useNavigate();
-  const { id, title, poster_path, release_date } = movie;
+  const { id, title, name, overview, poster_path, release_date, vote_average } =
+    movie;
 
   const onClick = () => {
     navigate(`/movie/${id}`);
@@ -36,11 +37,15 @@ const MovieCard = ({ movie }: Props) => {
         />
         <div className="movie-overlay">
           <FavoriteButton movie={movie}></FavoriteButton>
+          <p>{overview}</p>
         </div>
       </div>
       <div className="movie-info">
-        <h3>{title}</h3>
-        <p>{release_date}</p>
+        <h3>{title || name}</h3>
+        <section className="flex justify-between">
+          <p>{release_date}</p>
+          <span className="user-rating">{vote_average}</span>
+        </section>
       </div>
     </div>
   );

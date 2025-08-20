@@ -1,6 +1,6 @@
 import type { CSSProperties, MouseEvent } from "react";
 import { useMoviesContext } from "../../contexts/MoviesContext";
-import type { Movie } from "../../api/movies/movies.api.models";
+import type { Movie } from "../../shared/movie/movie.models";
 
 interface Props {
   movie: Movie;
