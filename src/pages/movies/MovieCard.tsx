@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import ImageElement from "../../shared/ImageElement";
-import type { Movie } from "../../api/movies/moviesApiSlice";
 import FavoriteButton from "../favorites/FavoriteButton";
+import type { Movie } from "../../api/movies/movies.api.models";
 
 interface Props {
   movie: Movie;

@@ -10,7 +10,6 @@ import {
   useGetSearchedMoviesQuery,
   useGetTopRatedMoviesQuery,
   useGetUpcomingMoviesQuery,
-  type MoviesError,
 } from "../../api/movies/moviesApiSlice";
 import Pagination from "@mui/material/Pagination";
 import type React from "react";
@@ -19,38 +18,37 @@ import MovieSearch from "./MovieSearch";
 import "./movies.css";
 import MovieList from "./MovieList";
 import MoviesTypeSelect from "./MoviesTypeSelect";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DEFAULT_MOVIES_TYPE,
   MovieTypes,
   type MovieType,
 } from "./movies.models";
+import type { MoviesError } from "../../api/movies/movies.api.models";
 
 const Movies = () => {
   // hooks
   const { page } = useParams();
-  const currentPage = page ? parseInt(page, 10) : 1;
   const [searchParams] = useSearchParams();
-  const q = searchParams.get("q") ?? "";
-
   const location = useLocation();
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(page ? parseInt(page, 10) : 1);
+  const [q, setQ] = useState(searchParams.get("q") ?? "");
+  const [moviesType, setMoviesType] = useState<MovieType>(DEFAULT_MOVIES_TYPE);
+
+  // works perfect however is it acceptable?
   const request = {
     page: currentPage,
     query: q,
   };
-  const [moviesType, setMoviesType] = useState<MovieType>(DEFAULT_MOVIES_TYPE);
 
-  // reset controls on default route /movies
-  // useEffect(() => {
-  //   const { pathname, search } = location;
-  //   console.log(location);
-
-  //   if (pathname === "/movies" && search === "") {
-  //     setMoviesType(1);
-  //     q = "";
-  //   }
-  // }, [location]);
+  // reset controls on default route navigation via Navbar [/movies]
+  useEffect(() => {
+    const { pathname, search } = location;
+    if (pathname === "/movies" && search === "") {
+      setQ(""); // reset search input on Navbar event
+    }
+  }, [location]);
 
   const popularMovies = useGetPopularMoviesQuery(request, {
     skip:
@@ -89,24 +87,30 @@ const Movies = () => {
   const searchedMovies = useGetSearchedMoviesQuery(request, { skip: !q });
 
   // handlers
-  const handleSearchChange = (q: string) => {
-    if (q.length === 0) {
+  const handleSearchChange = (value: string) => {
+    if (value.length === 0) {
+      setCurrentPage(1);
       navigate("/movies");
     }
   };
 
-  const handleSearchSubmit = (q: string) => {
-    const searchParams = q ? `?q=${encodeURIComponent(q)}` : ``;
-    navigate(`/movies${searchParams}`);
+  const handleSearchSubmit = (value: string) => {
+    setQ(value);
+    setCurrentPage(1);
     setMoviesType(DEFAULT_MOVIES_TYPE);
+    const searchParams = value ? `?q=${encodeURIComponent(value)}` : ``;
+    navigate(`/movies${searchParams}`);
   };
 
   const handleMoviesTypeChange = (type: MovieType) => {
+    setQ("");
+    setCurrentPage(1);
     setMoviesType(type);
     navigate("/movies");
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+    setCurrentPage(page);
     document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
     navigate(`/movies/${page}${location.search}`);
   };
@@ -121,7 +125,7 @@ const Movies = () => {
   ];
   const loading = data.some(({ isFetching }) => isFetching);
   const error = data.filter(({ error }) => error)?.[0]?.error as MoviesError & {
-    status: number | string;
+    status: number;
   };
   const { results, total_pages = 0 } =
     data.filter(({ status }) => status === "fulfilled")?.[0]?.data || {};
@@ -134,6 +138,7 @@ const Movies = () => {
           onChange={handleMoviesTypeChange}
         />
         <MovieSearch
+          key={q} // rerender on Q change
           q={q}
           onChange={handleSearchChange}
           onSubmit={handleSearchSubmit}

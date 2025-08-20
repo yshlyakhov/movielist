@@ -1,4 +1,4 @@
-import type { Movie } from "../../api/movies/moviesApiSlice";
+import type { Movie } from "../../api/movies/movies.api.models";
 import MovieCard from "./MovieCard";
 
 interface Props {

@@ -1,0 +1,17 @@
+.movie-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+}
+
+.movie-details > img {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  z-index: -1;
+  aspect-ratio: 16 / 9;
+  height: 100vh;
+  object-fit: cover;
+  filter: brightness(0.5);
+}

@@ -1,45 +1,22 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-  createApi,
-  fetchBaseQuery,
-  type FetchBaseQueryError,
-} from "@reduxjs/toolkit/query/react";
-
-const API_KEY = "e7cb1dd8f7c093b965424872dbcc03fe";
-const BASE_URL = "https://api.themoviedb.org/3";
-
-export interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-  release_date: string;
-}
-
-export interface MoviesRquest {
-  page: number;
-  query?: string;
-}
-
-export interface MoviesResponse {
-  page: number;
-  results: Movie[];
-  total_pages: number;
-  total_results: number;
-}
-
-export interface MoviesError {
-  status_code: number;
-  status_message: string;
-  success: boolean;
-}
+  type MoviesError,
+  type MoviesRequest,
+  type MoviesResponse,
+} from "./movies.api.models";
+import { API_KEY, BASE_URL } from "../config/api.config";
 
 const transformResponseFn = (response: MoviesResponse) => ({
   results: response.results,
   total_pages: response.total_pages,
 });
 
-const transformErrorResponseFn = ({ status, data }: FetchBaseQueryError) => ({
-  status,
-  ...(data as MoviesError),
+const transformErrorResponseFn = (response: {
+  status: number;
+  data: MoviesError;
+}) => ({
+  status: response.status,
+  ...response.data,
 });
 
 export const moviesApiSlice = createApi({
@@ -49,7 +26,7 @@ export const moviesApiSlice = createApi({
   }),
   endpoints: (builder) => ({
     getPopularMovies: builder.query({
-      query: ({ page }: MoviesRquest) =>
+      query: ({ page }: MoviesRequest) =>
         `/movie/popular?api_key=${API_KEY}&page=${page}`,
       transformResponse: transformResponseFn,
       transformErrorResponse: transformErrorResponseFn,
