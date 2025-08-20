@@ -15,10 +15,10 @@ const Favorites = () => {
   }
 
   return (
-    <div className="favorites-empty">
+    <section className="favorites-empty">
       <h2>No favorites movies yet</h2>
       <p>Time to add something</p>
-    </div>
+    </section>
   );
 };
 
