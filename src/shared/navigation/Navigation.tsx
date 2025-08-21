@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import "./navigation.css";
 
@@ -6,15 +6,42 @@ const Navigation = () => {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">Movie App</Link>
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "active-link" : "inactive-link"
+          }
+          state={Date.now()}
+        >
+          Movie App
+        </NavLink>
       </div>
       <div className="navbar-links">
-        <Link to="/movies" className="nav-link">
+        <NavLink
+          to="/movies"
+          className={({ isActive }) =>
+            isActive ? "active-link" : "inactive-link"
+          }
+          state={Date.now()}
+        >
           Movies
-        </Link>
-        <Link to="/favorites" className="nav-link">
+        </NavLink>
+        <NavLink
+          to="/series"
+          className={({ isActive }) =>
+            isActive ? "active-link" : "inactive-link"
+          }
+        >
+          TV Series
+        </NavLink>
+        <NavLink
+          to="/favorites"
+          className={({ isActive }) =>
+            isActive ? "active-link" : "inactive-link"
+          }
+        >
           Favorites
-        </Link>
+        </NavLink>
       </div>
     </nav>
   );

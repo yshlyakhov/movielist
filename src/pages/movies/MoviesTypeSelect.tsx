@@ -13,16 +13,11 @@ interface Props {
 }
 
 const MoviesTypeSelect = ({ moviesType, onChange }: Props) => {
-  // const [movieType, setMovieType] = useState<MovieType>({
-  //   id: 1,
-  //   label: "Popular",
-  // });
-
+  // handlers
   const handleChange = (event: SelectChangeEvent<number>) => {
     const type = MOVIES_TYPES.find(
       (v) => v.id === event.target.value
     ) as MovieType;
-    // setMovieType(type);
     onChange(type);
   };
 

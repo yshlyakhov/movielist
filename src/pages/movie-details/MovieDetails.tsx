@@ -3,13 +3,21 @@ import { useNavigate, useParams } from "react-router-dom";
 import ImageElement from "../../shared/image/ImageElement";
 import FavoriteButton from "../favorites/FavoriteButton";
 import { useGetMovieDetailsQuery } from "../../api/movie/movieApiSlice";
-import type { MovieDetailsError } from "../../api/movie/movie.api.models";
-import type { Movie } from "../../shared/movie/movie.models";
+import type {
+  MovieDetailsError,
+  MovieDetailsRequest,
+} from "../../api/movie/movie.api.models";
+import type { MediaType, Movie } from "../../shared/movie/movie.models";
 
 import "./movie-details.css";
 
 const MovieDetails = () => {
-  const { id } = useParams();
+  const { mediaId } = useParams();
+  const [media_type, id] = (mediaId || "").split("_");
+  const request: MovieDetailsRequest = {
+    id: parseInt(id, 10),
+    media_type: media_type as MediaType,
+  };
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,11 +26,7 @@ const MovieDetails = () => {
     }
   }, [id, navigate]);
 
-  const {
-    data: details,
-    isLoading,
-    error,
-  } = useGetMovieDetailsQuery({ id: parseInt(id as string, 10) });
+  const { data: details, isLoading, error } = useGetMovieDetailsQuery(request);
   const movie = {
     id: details?.id,
     title: details?.title,

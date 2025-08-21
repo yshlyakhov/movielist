@@ -1,3 +1,5 @@
+import type { MediaType } from "../../shared/movie/movie.models";
+
 export interface MovieDetails {
   id: number;
   overview: string;
@@ -10,6 +12,7 @@ export interface MovieDetails {
 
 export interface MovieDetailsRequest {
   id: number;
+  media_type: MediaType;
 }
 
 export interface MovieDetailsError {

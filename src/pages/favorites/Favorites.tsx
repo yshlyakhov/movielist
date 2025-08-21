@@ -8,7 +8,7 @@ const Favorites = () => {
 
   if (favorites.length) {
     return (
-      <section className="favorites-container">
+      <section className="content-container favorites-container">
         <h2>Your favorites</h2>
         <MovieList movies={favorites} />
       </section>

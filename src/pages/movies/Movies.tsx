@@ -36,17 +36,17 @@ const Movies = () => {
   const [q, setQ] = useState(searchParams.get("q") ?? "");
   const [moviesType, setMoviesType] = useState<MovieType>(DEFAULT_MOVIES_TYPE);
 
-  // works perfect however is it acceptable?
   const request = {
     page: currentPage,
     query: q,
   };
 
-  // reset controls on default route navigation via Navbar [/movies]
+  // re-render on Navigation action
   useEffect(() => {
     const { pathname, search } = location;
     if (pathname === "/movies" && search === "") {
       setQ(""); // reset search input on Navbar event
+      setCurrentPage(1);
     }
   }, [location]);
 
@@ -131,7 +131,7 @@ const Movies = () => {
     data.filter(({ status }) => status === "fulfilled")?.[0]?.data || {};
 
   return (
-    <section className="movies-container">
+    <section className="content-container movies-container">
       <div className="movies-controls">
         <MoviesTypeSelect
           moviesType={moviesType}

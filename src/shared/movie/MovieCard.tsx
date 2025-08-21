@@ -9,11 +9,19 @@ interface Props {
 
 const MovieCard = ({ movie }: Props) => {
   const navigate = useNavigate();
-  const { id, title, name, overview, poster_path, release_date, vote_average } =
-    movie;
+  const {
+    id,
+    title,
+    name,
+    overview,
+    poster_path,
+    release_date,
+    vote_average,
+    media_type,
+  } = movie;
 
   const onClick = () => {
-    navigate(`/movie/${id}`);
+    navigate(`/movie/${media_type}_${id}`);
   };
 
   const onKeyDown = (event: React.KeyboardEvent) => {

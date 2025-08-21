@@ -1,6 +1,7 @@
+export type MediaType = "movie" | "tv";
 export interface Movie {
   id: number;
-  media_type: "movie" | "tv";
+  media_type: MediaType;
   title: string; // movie
   name: string; // tv
   overview: string;

@@ -5,9 +5,13 @@ import {
   type MoviesResponse,
 } from "./movies.api.models";
 import { API_KEY, BASE_URL } from "../config/api.config";
+import type { MediaType } from "../../shared/movie/movie.models";
 
 const transformResponseFn = (response: MoviesResponse) => ({
-  results: response.results,
+  results: response.results.map((item) => ({
+    ...item,
+    media_type: "movie" as MediaType,
+  })),
   total_pages: response.total_pages,
 });
 

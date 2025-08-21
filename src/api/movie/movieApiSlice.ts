@@ -23,7 +23,8 @@ export const movieApiSlice = createApi({
   }),
   endpoints: (builder) => ({
     getMovieDetails: builder.query({
-      query: ({ id }: MovieDetailsRequest) => `/movie/${id}?api_key=${API_KEY}`,
+      query: ({ id, media_type }: MovieDetailsRequest) =>
+        `/${media_type === "movie" ? "movie" : "tv"}/${id}?api_key=${API_KEY}`,
       transformResponse: transformResponseFn,
       transformErrorResponse: transformErrorResponseFn,
     }),
