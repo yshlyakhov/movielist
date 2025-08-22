@@ -27,12 +27,12 @@ const Navigation = () => {
           Movies
         </NavLink>
         <NavLink
-          to="/series"
+          to="/tv"
           className={({ isActive }) =>
             isActive ? "active-link" : "inactive-link"
           }
         >
-          TV Series
+          TV
         </NavLink>
         <NavLink
           to="/favorites"

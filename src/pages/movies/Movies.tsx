@@ -13,7 +13,7 @@ import {
 } from "../../api/movies/moviesApiSlice";
 import Pagination from "@mui/material/Pagination";
 import type React from "react";
-import MovieSearch from "./MovieSearch";
+import MovieSearch from "../../shared/movie/MovieSearch";
 import MoviesTypeSelect from "./MoviesTypeSelect";
 import { useEffect, useState } from "react";
 import {
@@ -139,6 +139,7 @@ const Movies = () => {
         />
         <MovieSearch
           key={q} // rerender on Q change
+          label="Search for movies..."
           q={q}
           onChange={handleSearchChange}
           onSubmit={handleSearchSubmit}

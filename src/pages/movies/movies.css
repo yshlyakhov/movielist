@@ -3,12 +3,6 @@
   align-items: center;
   gap: 2rem;
 }
-.movies-search {
-  display: flex;
-  flex: 1;
-  gap: 2rem;
-  max-width: 768px;
-}
 
 .movies-empty {
   text-align: center;

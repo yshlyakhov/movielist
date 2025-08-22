@@ -6,7 +6,7 @@ import MoviesProvider from "./contexts/MoviesProvider";
 import MovieDetails from "./pages/movie-details/MovieDetails";
 import NotFound from "./pages/404/NotFound";
 import Trending from "./pages/trending/Trending";
-import Series from "./pages/series/Series";
+import TV from "./pages/tv/TV";
 
 const App = () => {
   return (
@@ -23,8 +23,8 @@ const App = () => {
           <Route path="/movie" element={<MovieDetails />}>
             <Route path="/movie/:mediaId" element={<MovieDetails />} />
           </Route>
-          <Route path="/series" element={<Series />}>
-            <Route path=":page" element={<Series />} />
+          <Route path="/tv" element={<TV />}>
+            <Route path=":page" element={<TV />} />
           </Route>
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/404" element={<NotFound />} />

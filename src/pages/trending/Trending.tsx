@@ -132,7 +132,7 @@ const Trending = () => {
             control={
               <Checkbox checked={tv} onChange={handleMediaType} name="tv" />
             }
-            label="series"
+            label="tv"
           />
         </FormControl>
 

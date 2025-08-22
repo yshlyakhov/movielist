@@ -3,12 +3,13 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 
 interface Props {
+  label: string;
   q: string;
   onChange: (value: string) => void;
   onSubmit: (value: string) => void;
 }
 
-const MovieSearch = ({ q, onChange, onSubmit }: Props) => {
+const MovieSearch = ({ label, q, onChange, onSubmit }: Props) => {
   const [inputValue, setInputValue] = useState(q);
 
   return (
@@ -22,7 +23,7 @@ const MovieSearch = ({ q, onChange, onSubmit }: Props) => {
       <TextField
         fullWidth
         id="outlined-basic"
-        label="Search for movies..."
+        label={label}
         variant="outlined"
         value={inputValue}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

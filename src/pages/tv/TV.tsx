@@ -1,4 +1,4 @@
-const Series = () => {
+const TV = () => {
   return (
     <section className="content-container">
       <h2>Series</h2>
@@ -6,4 +6,4 @@ const Series = () => {
   );
 };
 
-export default Series;
+export default TV;

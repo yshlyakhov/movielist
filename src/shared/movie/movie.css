@@ -1,3 +1,10 @@
+.movies-search {
+  display: flex;
+  flex: 1;
+  gap: 2rem;
+  max-width: 768px;
+}
+
 .movies-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, max-content));
