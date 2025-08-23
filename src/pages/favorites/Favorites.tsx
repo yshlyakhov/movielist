@@ -9,7 +9,8 @@ const Favorites = () => {
   if (favorites.length) {
     return (
       <section className="content-container favorites-container">
-        <h2>Your favorites</h2>
+        <h1>Your favorites</h1>
+
         <MovieList movies={favorites} />
       </section>
     );

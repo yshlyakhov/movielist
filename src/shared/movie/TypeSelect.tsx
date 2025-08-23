@@ -5,33 +5,37 @@ import {
   Select,
   type SelectChangeEvent,
 } from "@mui/material";
-import { MOVIES_TYPES, type MovieType } from "./movies.models";
 
-interface Props {
-  moviesType: MovieType;
-  onChange: (type: MovieType) => void;
+interface MovieProps<T> {
+  label: string;
+  items: T[];
+  itemsType: T;
+  onChange: (type: T) => void;
 }
 
-const MoviesTypeSelect = ({ moviesType, onChange }: Props) => {
+const TypeSelect = <T extends { id: number; label: string }>({
+  label,
+  items,
+  itemsType,
+  onChange,
+}: MovieProps<T>) => {
   // handlers
   const handleChange = (event: SelectChangeEvent<number>) => {
-    const type = MOVIES_TYPES.find(
-      (v) => v.id === event.target.value
-    ) as MovieType;
+    const type = items.find((v) => v.id === event.target.value) as T;
     onChange(type);
   };
 
   return (
     <FormControl sx={{ margin: 0, minWidth: 240 }} size="medium">
-      <InputLabel id="movie-type-select-label">Movies</InputLabel>
+      <InputLabel id="movie-type-select-label">{label}</InputLabel>
       <Select
         labelId="movie-type-select-label"
         id="movie-type-select"
-        value={moviesType.id}
-        label="Movies"
+        value={itemsType.id}
+        label={label}
         onChange={handleChange}
       >
-        {MOVIES_TYPES.map((type) => (
+        {items.map((type) => (
           <MenuItem value={type.id}>{type.label}</MenuItem>
         ))}
       </Select>
@@ -39,4 +43,4 @@ const MoviesTypeSelect = ({ moviesType, onChange }: Props) => {
   );
 };
 
-export default MoviesTypeSelect;
+export default TypeSelect;

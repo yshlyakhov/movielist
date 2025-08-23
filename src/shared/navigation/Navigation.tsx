@@ -31,6 +31,7 @@ const Navigation = () => {
           className={({ isActive }) =>
             isActive ? "active-link" : "inactive-link"
           }
+          state={Date.now()}
         >
           TV
         </NavLink>

@@ -36,6 +36,13 @@ const Trending = () => {
   const [timeWindowType, setTimeWindowType] =
     useState<TimeWindowModel>(DEFAULT_TIME_WINDOW);
 
+  // router guard
+  useEffect(() => {
+    if (page && !/^[1-9][0-9]*$/.test(page)) {
+      navigate("/not-found", { replace: true });
+    }
+  }, [page, navigate]);
+
   // re-render on Navigation action
   useEffect(() => {
     const { pathname, state } = location;
@@ -105,7 +112,7 @@ const Trending = () => {
 
   return (
     <section className="content-container">
-      <h2>Trending</h2>
+      <h1>Trending</h1>
 
       {/* @todo move to separate component */}
       <section className="flex flex-row">

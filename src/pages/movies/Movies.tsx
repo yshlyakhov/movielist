@@ -1,28 +1,28 @@
+import { useEffect, useState } from "react";
 import {
   useLocation,
   useNavigate,
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import Pagination from "@mui/material/Pagination";
 import {
-  useGetNowPlayingMoviesQuery,
   useGetPopularMoviesQuery,
+  useGetNowPlayingMoviesQuery,
   useGetSearchedMoviesQuery,
   useGetTopRatedMoviesQuery,
   useGetUpcomingMoviesQuery,
 } from "../../api/movies/moviesApiSlice";
-import Pagination from "@mui/material/Pagination";
-import type React from "react";
 import MovieSearch from "../../shared/movie/MovieSearch";
-import MoviesTypeSelect from "./MoviesTypeSelect";
-import { useEffect, useState } from "react";
+import TypeSelect from "../../shared/movie/TypeSelect";
+import MovieList from "../../shared/movie/MovieList";
 import {
   DEFAULT_MOVIES_TYPE,
+  MOVIES_TYPES,
   MovieTypes,
   type MovieType,
 } from "./movies.models";
 import type { MoviesError } from "../../api/movies/movies.api.models";
-import MovieList from "../../shared/movie/MovieList";
 
 import "./movies.css";
 
@@ -43,10 +43,13 @@ const Movies = () => {
 
   // re-render on Navigation action
   useEffect(() => {
-    const { pathname, search } = location;
+    const { pathname, search, state } = location;
     if (pathname === "/movies" && search === "") {
       setQ(""); // reset search input on Navbar event
       setCurrentPage(1);
+      if (state) {
+        setMoviesType(DEFAULT_MOVIES_TYPE);
+      }
     }
   }, [location]);
 
@@ -132,9 +135,13 @@ const Movies = () => {
 
   return (
     <section className="content-container movies-container">
+      <h1>Movies</h1>
+
       <div className="movies-controls">
-        <MoviesTypeSelect
-          moviesType={moviesType}
+        <TypeSelect<MovieType>
+          label="Movies"
+          items={MOVIES_TYPES}
+          itemsType={moviesType}
           onChange={handleMoviesTypeChange}
         />
         <MovieSearch

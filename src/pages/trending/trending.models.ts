@@ -13,7 +13,7 @@ export interface TimeWindowModel {
 }
 
 export const DEFAULT_MEDIA_TYPES = {
-  movie: false,
+  movie: true,
   tv: true,
 };
 

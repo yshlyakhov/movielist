@@ -1,27 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-  type MoviesError,
-  type MoviesRequest,
-  type MoviesResponse,
-} from "./movies.api.models";
 import { API_KEY, BASE_URL } from "../config/api.config";
-import type { MediaType } from "../../shared/movie/movie.models";
-
-const transformResponseFn = (response: MoviesResponse) => ({
-  results: response.results.map((item) => ({
-    ...item,
-    media_type: "movie" as MediaType,
-  })),
-  total_pages: response.total_pages,
-});
-
-const transformErrorResponseFn = (response: {
-  status: number;
-  data: MoviesError;
-}) => ({
-  status: response.status,
-  ...response.data,
-});
+import {
+  transformErrorResponseFn,
+  transformResponseFn,
+  type MoviesRequest,
+} from "./movies.api.models";
 
 export const moviesApiSlice = createApi({
   reducerPath: "movies",
@@ -67,5 +50,5 @@ export const {
   useGetTopRatedMoviesQuery,
   useGetUpcomingMoviesQuery,
   useGetSearchedMoviesQuery,
-  useLazyGetSearchedMoviesQuery,
+  // useLazyGetSearchedMoviesQuery, // for triggered activation
 } = moviesApiSlice;

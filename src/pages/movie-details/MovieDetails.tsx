@@ -20,6 +20,7 @@ const MovieDetails = () => {
   };
   const navigate = useNavigate();
 
+  // router guard
   useEffect(() => {
     if (!id) {
       navigate("/movies", { replace: true });

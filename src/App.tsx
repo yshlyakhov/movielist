@@ -27,8 +27,8 @@ const App = () => {
             <Route path=":page" element={<TV />} />
           </Route>
           <Route path="/favorites" element={<Favorites />} />
-          <Route path="/404" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/404" replace />} />
+          <Route path="/not-found" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Routes>
       </MoviesProvider>
     </>

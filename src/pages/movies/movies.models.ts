@@ -1,6 +1,6 @@
 export interface MovieType {
   id: number;
-  label: "Now Playing" | "Popular" | "Top Rated" | "Upcoming";
+  label: "Popular" | "Now Playing" | "Top Rated" | "Upcoming";
 }
 
 export enum MovieTypes {
