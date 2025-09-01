@@ -18,6 +18,14 @@ const Navigation = () => {
       </div>
       <div className="navbar-links">
         <NavLink
+          to="/trending-infinite"
+          className={({ isActive }) =>
+            isActive ? "active-link" : "inactive-link"
+          }
+        >
+          Infinite
+        </NavLink>
+        <NavLink
           to="/movies"
           className={({ isActive }) =>
             isActive ? "active-link" : "inactive-link"

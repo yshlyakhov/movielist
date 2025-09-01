@@ -5,14 +5,13 @@ import {
   FormControlLabel,
   InputLabel,
   MenuItem,
-  Pagination,
   Select,
   type SelectChangeEvent,
 } from "@mui/material";
 import { useGetTrendingQuery } from "../../api/trending/trendingApiSlice";
 import MovieList from "../../shared/movie/MovieList";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   DEFAULT_MEDIA_TYPES,
   DEFAULT_TIME_WINDOW,
@@ -20,87 +19,101 @@ import {
   TIME_WINDOW,
   type TimeWindowModel,
 } from "./trending.models";
+
 import type { TrendingError } from "../../api/trending/trending.api.models";
+import InfiniteScroll from "../../shared/infinite-scroll/InfiniteScroll";
+import type { Movie } from "../../shared/movie/movie.models";
 import { useRendersCount } from "../../hooks/renders-count";
 
-const Trending = () => {
-  useRendersCount("TRENDING");
+const TrendingInfinite = () => {
+  useRendersCount("TRENDING_INFINITE");
 
   // hooks
-  const { page } = useParams();
-  const location = useLocation();
-  const [currentPage, setCurrentPage] = useState(page ? parseInt(page, 10) : 1);
+  const settings = useRef(
+    JSON.parse(localStorage.getItem("TRENDING_SETTINGS") || "{}")
+  );
+
   const navigate = useNavigate();
   const [request, setRequest] = useState({
     ...DEFAULT_TRENDING_REQUEST,
-    page: currentPage,
   });
   const [mediaTypes, setMediaTypes] = useState(DEFAULT_MEDIA_TYPES);
   const [timeWindowType, setTimeWindowType] =
     useState<TimeWindowModel>(DEFAULT_TIME_WINDOW);
+  const [items, setItems] = useState<Movie[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // router guard
+  const { data, isLoading, isFetching, error } = useGetTrendingQuery(request);
+
   useEffect(() => {
-    if (page && !/^[1-9][0-9]*$/.test(page)) {
-      navigate("/not-found", { replace: true });
+    if (Object.keys(settings.current).length > 0) {
+      setMediaTypes(settings.current);
     }
-  }, [page, navigate]);
+  }, []);
 
-  // re-render on Navigation action
   useEffect(() => {
-    const { pathname, state } = location;
+    localStorage.setItem("TRENDING_SETTINGS", JSON.stringify(mediaTypes));
+  }, [mediaTypes]);
 
-    if (pathname === "/") {
-      // handle component navigation("/")
-      setCurrentPage(1);
-    }
-    if (state) {
-      setMediaTypes(DEFAULT_MEDIA_TYPES);
-      setTimeWindowType(DEFAULT_TIME_WINDOW);
-      setRequest({ ...DEFAULT_TRENDING_REQUEST });
-    }
-  }, [location]);
+  useEffect(() => {
+    setLoading(isFetching);
+  }, [isFetching]);
 
-  const { data, isLoading, error } = useGetTrendingQuery(request);
+  // init data
+  useEffect(() => {
+    if (loading) return;
+    if (errorData) {
+      setItems([]);
+      return;
+    }
+    setItems((prev) => prev.concat(data?.results || []));
+  }, [data, loading]);
+
+  const renderedItems = useMemo(() => {
+    const { movie, tv } = mediaTypes;
+    if ((movie && tv) || (!movie && !tv)) {
+      return items.slice();
+    } else if (movie) {
+      return items.filter(({ media_type }) => media_type === "movie");
+    } else if (tv) {
+      return items.filter(({ media_type }) => media_type === "tv");
+    }
+  }, [mediaTypes, items]);
 
   // handlers
-  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
-    setCurrentPage(page);
-    setRequest({ ...request, page });
-    document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
-    navigate(`/${page}`);
-  };
+  const handleMediaType = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.log("handleMediaType");
 
-  const handleMediaType = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMediaTypes({
-      ...mediaTypes,
-      [event.target.name]: event.target.checked,
-    });
-  };
+      setMediaTypes({
+        ...mediaTypes,
+        [event.target.name]: event.target.checked,
+      });
+    },
+    [mediaTypes]
+  );
 
-  const handleTimeWindowChange = (event: SelectChangeEvent<number>) => {
-    const type = TIME_WINDOW.find(
-      (v) => v.id === event.target.value
-    ) as TimeWindowModel;
-    setTimeWindowType(type);
-    setCurrentPage(1);
-    setRequest({ time_window: type.label, page: 1 });
-    navigate("/");
-  };
+  const handleTimeWindowChange = useCallback(
+    (event: SelectChangeEvent<number>) => {
+      const type = TIME_WINDOW.find(
+        (v) => v.id === event.target.value
+      ) as TimeWindowModel;
+      setTimeWindowType(type);
+      setRequest({ time_window: type.label, page: 1 });
+      setItems([]);
+    },
+    []
+  );
+
+  const handleLoadMore = useCallback(() => {
+    setRequest((prevState) => ({
+      ...prevState,
+      page: prevState.page + 1,
+    }));
+  }, []);
 
   // variables
   const { movie, tv } = mediaTypes;
-  const results = data?.results;
-
-  let renderedItems;
-  if (movie && tv) {
-    renderedItems = results?.slice();
-  } else if (movie) {
-    renderedItems = results?.filter(({ media_type }) => media_type === "movie");
-  } else if (tv) {
-    renderedItems = results?.filter(({ media_type }) => media_type === "tv");
-  }
-  const total_pages = data?.total_pages ?? 0;
   const seen = new Set();
   const errorData = (
     error as { status: number; data: TrendingError[] }
@@ -177,7 +190,9 @@ const Trending = () => {
           </ul>
           <Button
             className="justify-self-center"
-            onClick={() => navigate("/", { state: Date.now() })}
+            onClick={() =>
+              navigate("/trending-infinite", { state: Date.now() })
+            }
             size="small"
             type="button"
             variant="contained"
@@ -189,20 +204,12 @@ const Trending = () => {
       )}
 
       {renderedItems && renderedItems.length > 0 && (
-        <>
+        <InfiniteScroll loading={loading} onLoadMore={handleLoadMore}>
           <MovieList movies={renderedItems} />
-          <Pagination
-            count={total_pages}
-            page={currentPage}
-            boundaryCount={2}
-            showFirstButton
-            showLastButton
-            onChange={handlePageChange}
-          />
-        </>
+        </InfiniteScroll>
       )}
     </section>
   );
 };
 
-export default Trending;
+export default TrendingInfinite;

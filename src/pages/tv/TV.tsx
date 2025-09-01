@@ -20,8 +20,11 @@ import { DEFAULT_TV_TYPE, TV_TYPES, TvTypes, type TvType } from "./tv.models";
 import type { TvError } from "../../api/tv/tv.api.models";
 
 import "../movies/movies.css";
+import { useRendersCount } from "../../hooks/renders-count";
 
 const TV = () => {
+  useRendersCount("TV");
+
   // hooks
   const { page } = useParams();
   const [searchParams] = useSearchParams();

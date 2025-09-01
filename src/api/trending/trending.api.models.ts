@@ -18,3 +18,6 @@ export interface TrendingError {
   status_message: string;
   success: boolean;
 }
+
+export const delay = (ms = 0) =>
+  new Promise((resolve) => setTimeout(resolve, ms));

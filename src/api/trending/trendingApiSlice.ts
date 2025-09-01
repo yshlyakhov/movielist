@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_KEY, BASE_URL } from "../config/api.config";
-import type {
-  TrendingError,
-  TrendingRequest,
-  TrendingResponse,
+import {
+  type TrendingError,
+  type TrendingRequest,
+  type TrendingResponse,
 } from "./trending.api.models";
 
 export const trendingApiSlice = createApi({

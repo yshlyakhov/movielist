@@ -1,9 +1,13 @@
 import { useMoviesContext } from "../../contexts/MoviesContext";
+import { useRendersCount } from "../../hooks/renders-count";
 import MovieList from "../../shared/movie/MovieList";
 
 import "./favorites.css";
 
 const Favorites = () => {
+  useRendersCount("FAVORITES");
+
+  // hooks
   const { favorites } = useMoviesContext();
 
   if (favorites.length) {

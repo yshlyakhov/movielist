@@ -19,7 +19,7 @@ const MoviesProvider = ({ children }: { children: React.ReactNode }) => {
   }, [favorites]);
 
   const addToFavorites = (movie: Movie) => {
-    setFavorites((prev: Movie[]) => [...prev, movie]);
+    setFavorites((prev: Movie[]) => [movie, ...prev]);
   };
 
   const removeFromFavorites = (movieId: number) => {

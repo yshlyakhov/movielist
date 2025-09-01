@@ -7,6 +7,7 @@ import MovieDetails from "./pages/movie-details/MovieDetails";
 import NotFound from "./pages/404/NotFound";
 import Trending from "./pages/trending/Trending";
 import TV from "./pages/tv/TV";
+import TrendingInfinite from "./pages/trending/TrendingInfinite";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/" element={<Trending />}>
             <Route path=":page" element={<Trending />} />
           </Route>
+          <Route path="/trending-infinite" element={<TrendingInfinite />} />
           <Route path="/movies" element={<Movies />}>
             <Route path=":page" element={<Movies />} />
           </Route>

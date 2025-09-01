@@ -25,8 +25,11 @@ import {
 import type { MoviesError } from "../../api/movies/movies.api.models";
 
 import "./movies.css";
+import { useRendersCount } from "../../hooks/renders-count";
 
 const Movies = () => {
+  useRendersCount("MOVIES");
+
   // hooks
   const { page } = useParams();
   const [searchParams] = useSearchParams();

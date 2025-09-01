@@ -11,7 +11,8 @@ const ImageElement = ({ src, alt }: Props) => {
   const [error, setError] = useState(false);
   const [load, setLoad] = useState(false);
   const emptyStyle = {
-    background: "url(/src/assets/img.svg) no-repeat center center / 40px",
+    background: "url(/src/assets/image.svg) no-repeat center center / 40px",
+    filter: "brightness(0.5)",
   };
 
   return (
