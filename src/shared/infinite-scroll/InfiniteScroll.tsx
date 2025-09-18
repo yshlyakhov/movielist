@@ -17,7 +17,7 @@ const InfiniteScroll = ({ children, loading, onLoadMore }: Props) => {
           onLoadMore();
         }
       },
-      { threshold: 1 } // Trigger when 100% of the target is visible
+      { threshold: 0.5 } // Trigger when 50% of the target is visible
     );
 
     if (observerTarget.current) {

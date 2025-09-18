@@ -19,6 +19,7 @@ const ImageElement = ({ src, alt }: Props) => {
     <>
       {error ? (
         <img
+          alt="Empty image"
           style={emptyStyle}
           className={load ? "loaded" : ""}
           src="/src/assets/empty.svg"

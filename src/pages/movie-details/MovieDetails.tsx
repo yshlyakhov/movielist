@@ -22,7 +22,7 @@ const MovieDetails = () => {
 
   // router guard
   useEffect(() => {
-    if (!id) {
+    if (!id || !/^\d+$/.test(id)) {
       navigate("/movies", { replace: true });
     }
   }, [id, navigate]);

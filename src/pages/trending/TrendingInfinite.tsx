@@ -24,9 +24,12 @@ import type { TrendingError } from "../../api/trending/trending.api.models";
 import InfiniteScroll from "../../shared/infinite-scroll/InfiniteScroll";
 import type { Movie } from "../../shared/movie/movie.models";
 import { useRendersCount } from "../../hooks/renders-count";
+import { useOnlineStatus } from "../../hooks/online-status";
 
 const TrendingInfinite = () => {
   useRendersCount("TRENDING_INFINITE");
+  const isOnline = useOnlineStatus();
+  console.log("ONLINE ", isOnline);
 
   // hooks
   const settings = useRef(
@@ -42,8 +45,34 @@ const TrendingInfinite = () => {
     useState<TimeWindowModel>(DEFAULT_TIME_WINDOW);
   const [items, setItems] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
-
   const { data, isLoading, isFetching, error } = useGetTrendingQuery(request);
+
+  const errorData = useMemo(
+    () =>
+      (error as { status: number; data: TrendingError[] })?.data.filter(
+        (item) => {
+          const seen = new Set();
+          if (seen.has(item.status_code)) {
+            return false;
+          } else {
+            seen.add(item.status_code);
+            return true;
+          }
+        }
+      ),
+    [error]
+  );
+
+  const renderedItems = useMemo(() => {
+    const { movie, tv } = mediaTypes;
+    if ((movie && tv) || (!movie && !tv)) {
+      return items.slice();
+    } else if (movie) {
+      return items.filter(({ media_type }) => media_type === "movie");
+    } else if (tv) {
+      return items.filter(({ media_type }) => media_type === "tv");
+    }
+  }, [mediaTypes, items]);
 
   useEffect(() => {
     if (Object.keys(settings.current).length > 0) {
@@ -67,18 +96,7 @@ const TrendingInfinite = () => {
       return;
     }
     setItems((prev) => prev.concat(data?.results || []));
-  }, [data, loading]);
-
-  const renderedItems = useMemo(() => {
-    const { movie, tv } = mediaTypes;
-    if ((movie && tv) || (!movie && !tv)) {
-      return items.slice();
-    } else if (movie) {
-      return items.filter(({ media_type }) => media_type === "movie");
-    } else if (tv) {
-      return items.filter(({ media_type }) => media_type === "tv");
-    }
-  }, [mediaTypes, items]);
+  }, [data, loading, errorData]);
 
   // handlers
   const handleMediaType = useCallback(
@@ -114,17 +132,6 @@ const TrendingInfinite = () => {
 
   // variables
   const { movie, tv } = mediaTypes;
-  const seen = new Set();
-  const errorData = (
-    error as { status: number; data: TrendingError[] }
-  )?.data.filter((item) => {
-    if (seen.has(item.status_code)) {
-      return false;
-    } else {
-      seen.add(item.status_code);
-      return true;
-    }
-  });
 
   return (
     <section className="content-container">
